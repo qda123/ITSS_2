@@ -23,7 +23,7 @@ class ExpenseManager:
 
     def add_income(self, amount, description, date):
         self.data['income'].append({
-            'amount': amount,
+            'amount': round(amount, 2),
             'description': description,
             'date': date.strftime('%Y-%m-%d')
         })
@@ -32,7 +32,7 @@ class ExpenseManager:
     def update_income(self, index, amount, description, date):
         if 0 <= index < len(self.data['income']):
             self.data['income'][index].update({
-                'amount': amount,
+                'amount': round(amount, 2),
                 'description': description,
                 'date': date.strftime('%Y-%m-%d')
             })
@@ -74,7 +74,7 @@ class ExpenseManager:
             st.error("Category does not exist!")
             return
         self.data['expenses'].append({
-            'amount': amount,
+            'amount': round(amount, 2),
             'description': description,
             'category': category,
             'date': date.strftime('%Y-%m-%d')
@@ -84,7 +84,7 @@ class ExpenseManager:
     def update_expense(self, index, amount, description, category, date):
         if 0 <= index < len(self.data['expenses']):
             self.data['expenses'][index].update({
-                'amount': amount,
+                'amount': round(amount, 2),
                 'description': description,
                 'category': category,
                 'date': date.strftime('%Y-%m-%d')
@@ -103,10 +103,11 @@ class ExpenseManager:
     def list_expenses(self, period=None):
         if period == 'all':
             table_data = []
-            for idx, expense in enumerate(self.data['expenses']):
+            sorted_expenses = sorted(self.data['expenses'], key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            for idx, expense in enumerate(sorted_expenses):
                 table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
             st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
-        
+
         elif period == 'day':
             selected_date = st.date_input("Select date:")
             expenses_by_day = [expense for expense in self.data['expenses'] if expense['date'] == selected_date.strftime('%Y-%m-%d')]
@@ -117,13 +118,16 @@ class ExpenseManager:
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
             else:
                 st.write("No expenses found for selected date.")
-
+        
         elif period == 'month':
+            selected_year = st.selectbox("Select year:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
+            expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
             selected_month = st.selectbox("Select month:", [str(i).zfill(2) for i in range(1, 13)])
-            expenses_by_month = [expense for expense in self.data['expenses'] if expense['date'][5:7] == selected_month]
-            if expenses_by_month:
+            expenses_by_month = [expense for expense in expenses_by_year if expense['date'][5:7] == selected_month]
+            sorted_expenses_by_month = sorted(expenses_by_month, key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            if sorted_expenses_by_month:
                 table_data = []
-                for idx, expense in enumerate(expenses_by_month):
+                for idx, expense in enumerate(sorted_expenses_by_month):
                     table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
             else:
@@ -132,9 +136,10 @@ class ExpenseManager:
         elif period == 'year':
             selected_year = st.selectbox("Select year:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
             expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
-            if expenses_by_year:
+            sorted_expenses_by_year = sorted(expenses_by_year, key=lambda x: x['date'])  
+            if sorted_expenses_by_year:
                 table_data = []
-                for idx, expense in enumerate(expenses_by_year):
+                for idx, expense in enumerate(sorted_expenses_by_year):
                     table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
             else:
@@ -146,16 +151,20 @@ class ExpenseManager:
     def list_income(self, period=None):
         if period == 'all':
             table_data = []
-            for idx, income in enumerate(self.data['income']):
+            sorted_income = sorted(self.data['income'], key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            for idx, income in enumerate(sorted_income):
                 table_data.append([idx + 1, income['description'], income['amount'], income['date']])
             st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
         
         elif period == 'month':
+            selected_year = st.selectbox("Select year:", list(set(income['date'][:4] for income in self.data['income'])))
+            incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
             selected_month = st.selectbox("Select month:", [str(i).zfill(2) for i in range(1, 13)])
-            incomes_by_month = [income for income in self.data['income'] if income['date'][5:7] == selected_month]
-            if incomes_by_month:
+            incomes_by_month = [income for income in incomes_by_year if income['date'][5:7] == selected_month]
+            sorted_incomes_by_month = sorted(incomes_by_month, key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            if sorted_incomes_by_month:
                 table_data = []
-                for idx, income in enumerate(incomes_by_month):
+                for idx, income in enumerate(sorted_incomes_by_month):
                     table_data.append([idx + 1, income['description'], income['amount'], income['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
             else:
@@ -164,9 +173,10 @@ class ExpenseManager:
         elif period == 'year':
             selected_year = st.selectbox("Select year:", list(set(income['date'][:4] for income in self.data['income'])))
             incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
-            if incomes_by_year:
+            sorted_incomes_by_year = sorted(incomes_by_year, key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            if sorted_incomes_by_year:
                 table_data = []
-                for idx, income in enumerate(incomes_by_year):
+                for idx, income in enumerate(sorted_incomes_by_year):
                     table_data.append([idx + 1, income['description'], income['amount'], income['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
             else:
