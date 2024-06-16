@@ -101,14 +101,14 @@ class ExpenseManager:
             st.error("Chi muc khong hop le")
 
     def list_expenses(self, period=None):
-        if period == 'all':
+        if period == 'Toan bo':
             table_data = []
             sorted_expenses = sorted(self.data['expenses'], key=lambda x: x['date'])  
             for idx, expense in enumerate(sorted_expenses):
                 table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
             st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
 
-        elif period == 'day':
+        elif period == 'Ngay':
             selected_date = st.date_input("Ngay:")
             expenses_by_day = [expense for expense in self.data['expenses'] if expense['date'] == selected_date.strftime('%Y-%m-%d')]
             if expenses_by_day:
@@ -119,7 +119,7 @@ class ExpenseManager:
             else:
                 st.write("Khong tim thay thong tin chi tieu trong ngay duoc chon.")
         
-        elif period == 'month':
+        elif period == 'Thang':
             selected_year = st.selectbox("Nam:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
             expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
             selected_month = st.selectbox("Thang:", [str(i).zfill(2) for i in range(1, 13)])
@@ -133,7 +133,7 @@ class ExpenseManager:
             else:
                 st.write("Khong tim thay thong tin chi tieu trong thang duoc chon.")
 
-        elif period == 'year':
+        elif period == 'Nam':
             selected_year = st.selectbox("Nam:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
             expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
             sorted_expenses_by_year = sorted(expenses_by_year, key=lambda x: x['date'])  
@@ -149,14 +149,14 @@ class ExpenseManager:
             st.error("Giai doan duoc chon khong hop le.")
 
     def list_income(self, period=None):
-        if period == 'all':
+        if period == 'Toan bo':
             table_data = []
             sorted_income = sorted(self.data['income'], key=lambda x: x['date'])  
             for idx, income in enumerate(sorted_income):
                 table_data.append([idx + 1, income['description'], income['amount'], income['date']])
             st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
         
-        elif period == 'month':
+        elif period == 'Thang':
             selected_year = st.selectbox("Thang:", list(set(income['date'][:4] for income in self.data['income'])))
             incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
             selected_month = st.selectbox("Nam:", [str(i).zfill(2) for i in range(1, 13)])
@@ -170,7 +170,7 @@ class ExpenseManager:
             else:
                 st.write("Khong tim thay thong tin thu nhap trong thang duoc chon.")
 
-        elif period == 'year':
+        elif period == 'Nam':
             selected_year = st.selectbox("Nam:", list(set(income['date'][:4] for income in self.data['income'])))
             incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
             sorted_incomes_by_year = sorted(incomes_by_year, key=lambda x: x['date'])  
@@ -189,9 +189,9 @@ class ExpenseManager:
         summary = {}
         for expense in self.data['expenses']:
             date = datetime.strptime(expense['date'], '%Y-%m-%d')
-            if period == 'day':
+            if period == 'Ngay':
                 key = date.strftime('%Y-%m-%d')
-            elif period == 'month':
+            elif period == 'Thang':
                 key = date.strftime('%Y-%m')
 
             if key not in summary:
@@ -204,9 +204,9 @@ class ExpenseManager:
         summary = {}
         for income in self.data['income']:
             date = datetime.strptime(income['date'], '%Y-%m-%d')
-            if period == 'day':
+            if period == 'Ngay':
                 key = date.strftime('%Y-%m-%d')
-            elif period == 'month':
+            elif period == 'Thang':
                 key = date.strftime('%Y-%m')
 
             if key not in summary:
@@ -248,9 +248,9 @@ class ExpenseManager:
         category_summary = {}
         for expense in self.data['expenses']:
             date = datetime.strptime(expense['date'], '%Y-%m-%d')
-            if period == 'day' and specific_period == date.strftime('%Y-%m-%d'):
+            if period == 'Ngay' and specific_period == date.strftime('%Y-%m-%d'):
                 key = expense['category']
-            elif period == 'month' and specific_period == date.strftime('%Y-%m'):
+            elif period == 'Thang' and specific_period == date.strftime('%Y-%m'):
                 key = expense['category']
             else:
                 continue
@@ -403,16 +403,16 @@ def main():
 
             if st.button("Hien thi"):
                 date_range = (start_month, end_month)
-                manager.plot_line_summary('month', date_range)
+                manager.plot_line_summary('Thang', date_range)
 
         elif sub_choice == "Thong ke chi tieu theo danh muc":
             st.subheader("Thong ke chi tieu theo danh muc")
             period = st.selectbox("Loc theo:", ["Ngay", "Thang"])
             specific_period = None
 
-            if period == 'day':
+            if period == 'Ngay':
                 specific_period = st.date_input("Ngay:").strftime('%Y-%m-%d')
-            elif period == 'month':
+            elif period == 'Thang':
                 specific_period = st.selectbox("Thang:", [f"{datetime.now().year}-{str(i).zfill(2)}" for i in range(1, 13)])
 
             if st.button("Hien thi"):
