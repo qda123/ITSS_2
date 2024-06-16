@@ -236,7 +236,7 @@ class ExpenseManager:
         plt.plot(dates, income_amounts, marker='o', label='Thu nhap')
         plt.xlabel(f'Thoi gian ({period})')
         plt.ylabel('So tien (VND)')
-        plt.title(f'Thong ke chi tieu và thu nhap {period.capitalize()}')
+        plt.title(f'Thong ke chi tieu và thu nhap theo {period.capitalize()}')
         plt.legend()
         plt.grid(True)
         plt.xticks(rotation=45)
