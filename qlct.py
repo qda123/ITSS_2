@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import streamlit as st
 import calendar
+import pandas as pd
 
 class ExpenseManager:
     def __init__(self, file_name='expenses.json'):
@@ -100,17 +101,79 @@ class ExpenseManager:
             st.error("Invalid index")
 
     def list_expenses(self, period=None):
-        if period:
-            expenses_by_period = [expense for expense in self.data['expenses'] if expense['date'][:len(period)] == period]
-            for idx, expense in enumerate(expenses_by_period):
-                st.write(f"{idx + 1}. {expense['description']} - {expense['amount']} VND - {expense['category']} - {expense['date']}")
-        else:
+        if period == 'all':
+            table_data = []
             for idx, expense in enumerate(self.data['expenses']):
-                st.write(f"{idx + 1}. {expense['description']} - {expense['amount']} VND - {expense['category']} - {expense['date']}")
+                table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
+            st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
+        
+        elif period == 'day':
+            selected_date = st.date_input("Select date:")
+            expenses_by_day = [expense for expense in self.data['expenses'] if expense['date'] == selected_date.strftime('%Y-%m-%d')]
+            if expenses_by_day:
+                table_data = []
+                for idx, expense in enumerate(expenses_by_day):
+                    table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
+                st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
+            else:
+                st.write("No expenses found for selected date.")
 
-    def list_income(self):
-        for idx, income in enumerate(self.data['income']):
-            st.write(f"{idx + 1}. {income['description']} - {income['amount']} VND - {income['date']}")
+        elif period == 'month':
+            selected_month = st.selectbox("Select month:", [str(i).zfill(2) for i in range(1, 13)])
+            expenses_by_month = [expense for expense in self.data['expenses'] if expense['date'][5:7] == selected_month]
+            if expenses_by_month:
+                table_data = []
+                for idx, expense in enumerate(expenses_by_month):
+                    table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
+                st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
+            else:
+                st.write("No expenses found for selected month.")
+
+        elif period == 'year':
+            selected_year = st.selectbox("Select year:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
+            expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
+            if expenses_by_year:
+                table_data = []
+                for idx, expense in enumerate(expenses_by_year):
+                    table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
+                st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
+            else:
+                st.write("No expenses found for selected year.")
+
+        else:
+            st.error("Invalid period selection.")
+
+    def list_income(self, period=None):
+        if period == 'all':
+            table_data = []
+            for idx, income in enumerate(self.data['income']):
+                table_data.append([idx + 1, income['description'], income['amount'], income['date']])
+            st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
+        
+        elif period == 'month':
+            selected_month = st.selectbox("Select month:", [str(i).zfill(2) for i in range(1, 13)])
+            incomes_by_month = [income for income in self.data['income'] if income['date'][5:7] == selected_month]
+            if incomes_by_month:
+                table_data = []
+                for idx, income in enumerate(incomes_by_month):
+                    table_data.append([idx + 1, income['description'], income['amount'], income['date']])
+                st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
+            else:
+                st.write("No income found for selected month.")
+
+        elif period == 'year':
+            selected_year = st.selectbox("Select year:", list(set(income['date'][:4] for income in self.data['income'])))
+            incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
+            if incomes_by_year:
+                table_data = []
+                for idx, income in enumerate(incomes_by_year):
+                    table_data.append([idx + 1, income['description'], income['amount'], income['date']])
+                st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
+            else:
+                st.write("No income found for selected year.")
+
+        else:
+            st.error("Invalid period selection.")
 
     def summarize_expenses(self, period):
         summary = {}
@@ -142,13 +205,14 @@ class ExpenseManager:
         
         return summary
 
-    def plot_line_summary(self, period, specific_period):
+    def plot_line_summary(self, period, date_range):
+        start_period, end_period = date_range
         expense_summary = self.summarize_expenses(period)
         income_summary = self.summarize_income(period)
 
-        if specific_period:
-            expense_summary = {k: v for k, v in expense_summary.items() if specific_period in k}
-            income_summary = {k: v for k, v in income_summary.items() if specific_period in k}
+        if start_period and end_period:
+            expense_summary = {k: v for k, v in expense_summary.items() if start_period <= k <= end_period}
+            income_summary = {k: v for k, v in income_summary.items() if start_period <= k <= end_period}
 
         dates = list(expense_summary.keys())
         expense_amounts = list(expense_summary.values())
@@ -230,14 +294,8 @@ def main():
 
         elif sub_choice == "View":
             st.subheader("List Income")
-            manager.list_income()
-
-            st.subheader("View Income by Month")
-            month = st.selectbox("Select month:", [f"{datetime.now().year}-{str(i).zfill(2)}" for i in range(1, 13)])
-            if st.button("View Income"):
-                incomes_by_month = [inc for inc in manager.data['income'] if inc['date'][:7] == month]
-                for income in incomes_by_month:
-                    st.write(f"{income['description']} - {income['amount']} VND - {income['date']}")
+            period = st.selectbox("Select period:", ["all", "month", "year"])
+            manager.list_income(period)
 
     elif choice == "Category of Expenses":
         sub_menu = ["Add", "Update", "Delete"]
@@ -319,26 +377,19 @@ def main():
         
         if sub_choice == "List Expenses":
             st.subheader("List Expenses")
-            date_period = st.date_input("Select date (for day) or month (for month):")
-            period = st.selectbox("Select period type:", ["day", "month"])
-            if period == "day":
-                specific_period = date_period.strftime('%Y-%m-%d')
-            elif period == "month":
-                specific_period = date_period.strftime('%Y-%m')
-            manager.list_expenses(specific_period)
+            period = st.selectbox("Select period:", ["all", "day", "month", "year"])
+            manager.list_expenses(period)
 
         elif sub_choice == "Plot Line Summary":
             st.subheader("Plot Line Summary")
-            period = st.selectbox("Plot summary by:", ["day", "month"])
-            specific_period = None
-
-            if period == 'day':
-                specific_period = st.date_input("Select date:").strftime('%Y-%m-%d')
-            elif period == 'month':
-                specific_period = st.selectbox("Select month:", [f"{datetime.now().year}-{str(i).zfill(2)}" for i in range(1, 13)])
+            start_year = st.selectbox("Select start year:", [str(year) for year in range(2000, datetime.now().year + 1)])
+            start_month = st.selectbox("Select start month:", [f"{start_year}-{str(i).zfill(2)}" for i in range(1, 13)])
+            end_year = st.selectbox("Select end year:", [str(year) for year in range(2000, datetime.now().year + 1)])
+            end_month = st.selectbox("Select end month:", [f"{end_year}-{str(i).zfill(2)}" for i in range(1, 13)])
 
             if st.button("Plot"):
-                manager.plot_line_summary(period, specific_period)
+                date_range = (start_month, end_month)
+                manager.plot_line_summary('month', date_range)
 
         elif sub_choice == "Plot Pie Summary":
             st.subheader("Plot Pie Summary")
