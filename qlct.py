@@ -38,14 +38,14 @@ class ExpenseManager:
             })
             self.save_data()
         else:
-            st.error("Invalid index")
+            st.error("Chi muc khong hop le")
 
     def delete_income(self, index):
         if 0 <= index < len(self.data['income']):
             del self.data['income'][index]
             self.save_data()
         else:
-            st.error("Invalid index")
+            st.error("Chi muc khong hop le")
 
     def add_category(self, category_name, description):
         if category_name not in [cat['name'] for cat in self.data['categories'] if isinstance(cat, dict)]:
@@ -62,7 +62,7 @@ class ExpenseManager:
                         expense['category'] = new_category_name
                 self.save_data()
                 return
-        st.error("Category does not exist!")
+        st.error("Danh muc khong ton tai!")
 
     def delete_category(self, category_name):
         self.data['categories'] = [cat for cat in self.data['categories'] if cat['name'] != category_name]
@@ -71,7 +71,7 @@ class ExpenseManager:
 
     def add_expense(self, amount, description, category, date):
         if category not in [cat['name'] for cat in self.data['categories'] if isinstance(cat, dict)]:
-            st.error("Category does not exist!")
+            st.error("Danh muc khong ton tai!")
             return
         self.data['expenses'].append({
             'amount': round(amount, 2),
@@ -91,25 +91,25 @@ class ExpenseManager:
             })
             self.save_data()
         else:
-            st.error("Invalid index")
+            st.error("Chi muc khong hop le")
 
     def delete_expense(self, index):
         if 0 <= index < len(self.data['expenses']):
             del self.data['expenses'][index]
             self.save_data()
         else:
-            st.error("Invalid index")
+            st.error("Chi muc khong hop le")
 
     def list_expenses(self, period=None):
         if period == 'all':
             table_data = []
-            sorted_expenses = sorted(self.data['expenses'], key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            sorted_expenses = sorted(self.data['expenses'], key=lambda x: x['date'])  
             for idx, expense in enumerate(sorted_expenses):
                 table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
             st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
 
         elif period == 'day':
-            selected_date = st.date_input("Select date:")
+            selected_date = st.date_input("Ngay:")
             expenses_by_day = [expense for expense in self.data['expenses'] if expense['date'] == selected_date.strftime('%Y-%m-%d')]
             if expenses_by_day:
                 table_data = []
@@ -117,24 +117,24 @@ class ExpenseManager:
                     table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
             else:
-                st.write("No expenses found for selected date.")
+                st.write("Khong tim thay thong tin chi tieu trong ngay duoc chon.")
         
         elif period == 'month':
-            selected_year = st.selectbox("Select year:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
+            selected_year = st.selectbox("Nam:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
             expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
-            selected_month = st.selectbox("Select month:", [str(i).zfill(2) for i in range(1, 13)])
+            selected_month = st.selectbox("Thang:", [str(i).zfill(2) for i in range(1, 13)])
             expenses_by_month = [expense for expense in expenses_by_year if expense['date'][5:7] == selected_month]
-            sorted_expenses_by_month = sorted(expenses_by_month, key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            sorted_expenses_by_month = sorted(expenses_by_month, key=lambda x: x['date'])  
             if sorted_expenses_by_month:
                 table_data = []
                 for idx, expense in enumerate(sorted_expenses_by_month):
                     table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
             else:
-                st.write("No expenses found for selected month.")
+                st.write("Khong tim thay thong tin chi tieu trong thang duoc chon.")
 
         elif period == 'year':
-            selected_year = st.selectbox("Select year:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
+            selected_year = st.selectbox("Nam:", list(set(expense['date'][:4] for expense in self.data['expenses'])))
             expenses_by_year = [expense for expense in self.data['expenses'] if expense['date'][:4] == selected_year]
             sorted_expenses_by_year = sorted(expenses_by_year, key=lambda x: x['date'])  
             if sorted_expenses_by_year:
@@ -143,47 +143,47 @@ class ExpenseManager:
                     table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Category', 'Date']))
             else:
-                st.write("No expenses found for selected year.")
+                st.write("Khong tim thay thong tin chi tieu trong nam duoc chon.")
 
         else:
-            st.error("Invalid period selection.")
+            st.error("Giai doan duoc chon khong hop le.")
 
     def list_income(self, period=None):
         if period == 'all':
             table_data = []
-            sorted_income = sorted(self.data['income'], key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            sorted_income = sorted(self.data['income'], key=lambda x: x['date'])  
             for idx, income in enumerate(sorted_income):
                 table_data.append([idx + 1, income['description'], income['amount'], income['date']])
             st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
         
         elif period == 'month':
-            selected_year = st.selectbox("Select year:", list(set(income['date'][:4] for income in self.data['income'])))
+            selected_year = st.selectbox("Thang:", list(set(income['date'][:4] for income in self.data['income'])))
             incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
-            selected_month = st.selectbox("Select month:", [str(i).zfill(2) for i in range(1, 13)])
+            selected_month = st.selectbox("Nam:", [str(i).zfill(2) for i in range(1, 13)])
             incomes_by_month = [income for income in incomes_by_year if income['date'][5:7] == selected_month]
-            sorted_incomes_by_month = sorted(incomes_by_month, key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            sorted_incomes_by_month = sorted(incomes_by_month, key=lambda x: x['date'])  
             if sorted_incomes_by_month:
                 table_data = []
                 for idx, income in enumerate(sorted_incomes_by_month):
                     table_data.append([idx + 1, income['description'], income['amount'], income['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
             else:
-                st.write("No income found for selected month.")
+                st.write("Khong tim thay thong tin thu nhap trong thang duoc chon.")
 
         elif period == 'year':
-            selected_year = st.selectbox("Select year:", list(set(income['date'][:4] for income in self.data['income'])))
+            selected_year = st.selectbox("Nam:", list(set(income['date'][:4] for income in self.data['income'])))
             incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
-            sorted_incomes_by_year = sorted(incomes_by_year, key=lambda x: x['date'])  # Sắp xếp theo ngày tăng dần
+            sorted_incomes_by_year = sorted(incomes_by_year, key=lambda x: x['date'])  
             if sorted_incomes_by_year:
                 table_data = []
                 for idx, income in enumerate(sorted_incomes_by_year):
                     table_data.append([idx + 1, income['description'], income['amount'], income['date']])
                 st.table(pd.DataFrame(table_data, columns=['Index', 'Description', 'Amount (VND)', 'Date']))
             else:
-                st.write("No income found for selected year.")
+                st.write("Khong tim thay thong tin thu nhap trong nam duoc chon.")
 
         else:
-            st.error("Invalid period selection.")
+            st.error("Giai doan duoc chon khong hop le.")
 
     def summarize_expenses(self, period):
         summary = {}
@@ -224,7 +224,6 @@ class ExpenseManager:
             expense_summary = {k: v for k, v in expense_summary.items() if start_period <= k <= end_period}
             income_summary = {k: v for k, v in income_summary.items() if start_period <= k <= end_period}
 
-        # Sắp xếp các summary theo thời gian tăng dần
         sorted_expense_summary = sorted(expense_summary.items(), key=lambda x: x[0])
         sorted_income_summary = sorted(income_summary.items(), key=lambda x: x[0])
 
@@ -233,11 +232,11 @@ class ExpenseManager:
         income_amounts = [income_summary.get(date, 0) for date in dates]
 
         plt.figure(figsize=(10, 5))
-        plt.plot(dates, expense_amounts, marker='o', label='Expenses')
-        plt.plot(dates, income_amounts, marker='o', label='Income')
-        plt.xlabel(f'Time ({period})')
-        plt.ylabel('Amount (VND)')
-        plt.title(f'Income and Expense Summary by {period.capitalize()}')
+        plt.plot(dates, expense_amounts, marker='o', label='Chi tieu')
+        plt.plot(dates, income_amounts, marker='o', label='Thu nhap')
+        plt.xlabel(f'Thoi gian ({period})')
+        plt.ylabel('So tien (VND)')
+        plt.title(f'Thong ke chi tieu và thu nhap {period.capitalize()}')
         plt.legend()
         plt.grid(True)
         plt.xticks(rotation=45)
@@ -264,159 +263,159 @@ class ExpenseManager:
             plt.figure(figsize=(7, 7))
             plt.pie(category_summary.values(), labels=category_summary.keys(), autopct='%1.1f%%', startangle=140)
             plt.axis('equal')
-            plt.title(f'Expense Distribution by Category ({period.capitalize()})')
+            plt.title(f'Thong ke chi tieu theo danh muc ({period.capitalize()})')
             st.pyplot(plt)
 
 def main():
     manager = ExpenseManager()
     
-    st.title("Expense Manager")
+    st.title("Quan li chi tieu")
 
-    menu = ["Income", "Category of Expenses", "Expenses", "Summarize and Plot Summary"]
+    menu = ["Thu nhap", "Danh muc chi tieu", "Chi tieu", "Thong ke"]
     choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Income":
-        sub_menu = ["Add", "Update", "Delete", "View"]
-        sub_choice = st.sidebar.selectbox("Income Menu", sub_menu)
+    if choice == "Thu nhap":
+        sub_menu = ["Tao", "Cap nhat", "Xoa", "Xem danh sach thu nhap"]
+        sub_choice = st.sidebar.selectbox("Cac chuc nang", sub_menu)
         
-        if sub_choice == "Add":
-            st.subheader("Add Income")
-            amount = st.number_input("Enter amount:", min_value=0, step=1)
-            description = st.text_input("Enter description:")
-            date = st.date_input("Enter date:")
-            if st.button("Add Income"):
+        if sub_choice == "Tao":
+            st.subheader("Tao thu nhap")
+            amount = st.number_input("So tien:", min_value=0, step=1)
+            description = st.text_input("Loai thu nhap:")
+            date = st.date_input("Ngay:")
+            if st.button("Tao thu nhap"):
                 manager.add_income(amount, description, date)
-                st.success("Income added successfully!")
+                st.success("Ban da tao thanh cong!")
 
-        elif sub_choice == "Update":
-            st.subheader("Update Income")
+        elif sub_choice == "Cap nhat":
+            st.subheader("Cap nhat thu nhap")
             incomes = [f"{idx + 1}. {inc['description']} - {inc['amount']} VND - {inc['date']}" for idx, inc in enumerate(manager.data['income'])]
-            index = st.selectbox("Select the income to update:", range(len(incomes)), format_func=lambda x: incomes[x])
-            amount = st.number_input("Enter new amount:", min_value=0.0, step=0.01)
-            description = st.text_input("Enter new description:")
-            date = st.date_input("Enter date:")
-            if st.button("Update Income"):
+            index = st.selectbox("Thu nhap ban muon thay doi:", range(len(incomes)), format_func=lambda x: incomes[x])
+            amount = st.number_input("So tien:", min_value=0.0, step=0.01)
+            description = st.text_input("Loai thu nhap:")
+            date = st.date_input("Ngay:")
+            if st.button("Cap nhat thu nhap"):
                 manager.update_income(index, amount, description, date)
-                st.success("Income updated successfully!")
+                st.success("Ban da cap nhat thanh cong!")
 
-        elif sub_choice == "Delete":
-            st.subheader("Delete Income")
+        elif sub_choice == "Xoa":
+            st.subheader("Xoa thu nhap")
             incomes = [f"{idx + 1}. {inc['description']} - {inc['amount']} VND - {inc['date']}" for idx, inc in enumerate(manager.data['income'])]
-            index = st.selectbox("Select the income to delete:", range(len(incomes)), format_func=lambda x: incomes[x])
-            if st.button("Delete Income"):
+            index = st.selectbox("Thu nhap ban muon xoa:", range(len(incomes)), format_func=lambda x: incomes[x])
+            if st.button("Xoa thu nhap"):
                 manager.delete_income(index)
-                st.success("Income deleted successfully!")
+                st.success("Ban da xoa thanh cong!")
 
-        elif sub_choice == "View":
-            st.subheader("List Income")
-            period = st.selectbox("Select period:", ["all", "month", "year"])
+        elif sub_choice == "Xem danh sach thu nhap":
+            st.subheader("Xem danh sach thu nhap")
+            period = st.selectbox("Loc theo:", ["Toan bo", "Thang", "Nam"])
             manager.list_income(period)
 
-    elif choice == "Category of Expenses":
-        sub_menu = ["Add", "Update", "Delete"]
-        sub_choice = st.sidebar.selectbox("Category Menu", sub_menu)
+    elif choice == "Danh muc chi tieu":
+        sub_menu = ["Tao", "Cap nhat", "Xoa"]
+        sub_choice = st.sidebar.selectbox("Cac chuc nang", sub_menu)
         
-        if sub_choice == "Add":
-            st.subheader("Add Category")
-            category = st.text_input("Enter category name:")
-            description = st.text_input("Enter category description:")
-            if st.button("Add Category"):
+        if sub_choice == "Tao":
+            st.subheader("Them danh muc")
+            category = st.text_input("Ten danh muc:")
+            description = st.text_input("Mo ta:")
+            if st.button("Them danh muc"):
                 manager.add_category(category, description)
-                st.success("Category added successfully!")
+                st.success("Ban da tao thanh cong!")
 
-        elif sub_choice == "Update":
-            st.subheader("Update Category")
+        elif sub_choice == "Cap nhat":
+            st.subheader("Cap nhat danh muc")
             if all(isinstance(cat, dict) and 'name' in cat for cat in manager.data['categories']):
-                old_category = st.selectbox("Select the category to update:", [cat['name'] for cat in manager.data['categories']])
-                new_category = st.text_input("Enter new category name:")
-                new_description = st.text_input("Enter new category description:")
-                if st.button("Update Category"):
+                old_category = st.selectbox("Danh muc ban muon thay doi:", [cat['name'] for cat in manager.data['categories']])
+                new_category = st.text_input("Ten danh muc moi:")
+                new_description = st.text_input("Mo ta cho danh muc moi:")
+                if st.button("Cap nhat danh muc"):
                     manager.update_category(old_category, new_category, new_description)
-                    st.success("Category updated successfully!")
+                    st.success("Ban da cap nhat thanh cong!")
             else:
-                st.error("Categories data is invalid.")
+                st.error("Du lieu danh muc khong hop le.")
 
-        elif sub_choice == "Delete":
-            st.subheader("Delete Category")
+        elif sub_choice == "Xoa":
+            st.subheader("Xoa danh muc")
             if all(isinstance(cat, dict) and 'name' in cat for cat in manager.data['categories']):
-                category = st.selectbox("Select the category to delete:", [cat['name'] for cat in manager.data['categories']])
-                if st.button("Delete Category"):
+                category = st.selectbox("Chon danh muc de xoa:", [cat['name'] for cat in manager.data['categories']])
+                if st.button("Xoa danh muc"):
                     manager.delete_category(category)
-                    st.success("Category deleted successfully!")
+                    st.success("Ban da xoa thanh cong!")
             else:
-                st.error("Categories data is invalid.")
+                st.error("Du lieu danh muc khong hop le.")
 
-    elif choice == "Expenses":
-        sub_menu = ["Add", "Update", "Delete"]
-        sub_choice = st.sidebar.selectbox("Expenses Menu", sub_menu)
+    elif choice == "Chi tieu":
+        sub_menu = ["Tao", "Cap nhat", "Xoa"]
+        sub_choice = st.sidebar.selectbox("Cac chuc nang", sub_menu)
         
-        if sub_choice == "Add":
-            st.subheader("Add Expense")
-            amount = st.number_input("Enter amount:", min_value=0, step=1)
-            description = st.text_input("Enter description:")
-            date = st.date_input("Enter date:")
+        if sub_choice == "Tao":
+            st.subheader("Tao chi tieu")
+            amount = st.number_input("So tien:", min_value=0, step=1)
+            description = st.text_input("Ghi chu:")
+            date = st.date_input("Ngay:")
             if all(isinstance(cat, dict) and 'name' in cat for cat in manager.data['categories']):
-                category = st.selectbox("Select category:", [cat['name'] for cat in manager.data['categories']])
-                if st.button("Add Expense"):
+                category = st.selectbox("Chon danh muc:", [cat['name'] for cat in manager.data['categories']])
+                if st.button("Tao chi tieu"):
                     manager.add_expense(amount, description, category, date)
-                    st.success("Expense added successfully!")
+                    st.success("Ban da tao thanh cong!")
             else:
-                st.error("Categories data is invalid.")
+                st.error("Du lieu danh muc khong hop le.")
 
-        elif sub_choice == "Update":
-            st.subheader("Update Expense")
+        elif sub_choice == "Cap nhat":
+            st.subheader("Cap nhat chi tieu")
             expenses = [f"{idx + 1}. {exp['description']} - {exp['amount']} VND - {exp['category']} - {exp['date']}" for idx, exp in enumerate(manager.data['expenses'])]
-            index = st.selectbox("Select the expense to update:", range(len(expenses)), format_func=lambda x: expenses[x])
-            amount = st.number_input("Enter new amount:", min_value=0.0, step=0.01)
-            description = st.text_input("Enter new description:")
-            date = st.date_input("Enter date:")
+            index = st.selectbox("Chi tieu ban muon thay doi:", range(len(expenses)), format_func=lambda x: expenses[x])
+            amount = st.number_input("So tien:", min_value=0.0, step=0.01)
+            description = st.text_input("Ghi chu:")
+            date = st.date_input("Ngay:")
             if all(isinstance(cat, dict) and 'name' in cat for cat in manager.data['categories']):
-                category = st.selectbox("Select new category:", [cat['name'] for cat in manager.data['categories']])
-                if st.button("Update Expense"):
+                category = st.selectbox("Danh muc:", [cat['name'] for cat in manager.data['categories']])
+                if st.button("Cap nhat chi tieu"):
                     manager.update_expense(index, amount, description, category, date)
-                    st.success("Expense updated successfully!")
+                    st.success("Ban da cap nhat thanh cong!")
             else:
-                st.error("Categories data is invalid.")
+                st.error("Du lieu danh muc khong hop le.")
 
-        elif sub_choice == "Delete":
-            st.subheader("Delete Expense")
+        elif sub_choice == "Xoa":
+            st.subheader("Xoa chi tieu")
             expenses = [f"{idx + 1}. {exp['description']} - {exp['amount']} VND - {exp['category']} - {exp['date']}" for idx, exp in enumerate(manager.data['expenses'])]
-            index = st.selectbox("Select the expense to delete:", range(len(expenses)), format_func=lambda x: expenses[x])
-            if st.button("Delete Expense"):
+            index = st.selectbox("Chi tieu ban muon xoa:", range(len(expenses)), format_func=lambda x: expenses[x])
+            if st.button("Xoa chi tieu"):
                 manager.delete_expense(index)
-                st.success("Expense deleted successfully!")
+                st.success("Ban da xoa thanh cong!")
 
-    elif choice == "Summarize and Plot Summary":
-        sub_menu = ["List Expenses", "Plot Line Summary", "Plot Pie Summary"]
-        sub_choice = st.sidebar.selectbox("Summary Menu", sub_menu)
+    elif choice == "Thong ke":
+        sub_menu = ["Danh sach chi tieu", "Thong ke thu nhap va chi tieu theo thoi gian", "Thong ke chi tieu theo danh muc"]
+        sub_choice = st.sidebar.selectbox("Cac chuc nang", sub_menu)
         
-        if sub_choice == "List Expenses":
-            st.subheader("List Expenses")
-            period = st.selectbox("Select period:", ["all", "day", "month", "year"])
+        if sub_choice == "Danh sach chi tieu":
+            st.subheader("Danh sach chi tieu")
+            period = st.selectbox("Loc theo:", ["Toan bo", "Ngay", "Thang", "Nam"])
             manager.list_expenses(period)
 
-        elif sub_choice == "Plot Line Summary":
-            st.subheader("Plot Line Summary")
-            start_year = st.selectbox("Select start year:", [str(year) for year in range(2000, datetime.now().year + 1)])
-            start_month = st.selectbox("Select start month:", [f"{start_year}-{str(i).zfill(2)}" for i in range(1, 13)])
-            end_year = st.selectbox("Select end year:", [str(year) for year in range(2000, datetime.now().year + 1)])
-            end_month = st.selectbox("Select end month:", [f"{end_year}-{str(i).zfill(2)}" for i in range(1, 13)])
+        elif sub_choice == "Thong ke thu nhap va chi tieu theo thoi gian":
+            st.subheader("Thong ke thu nhap va chi tieu theo thoi gian")
+            start_year = st.selectbox("Bat dau tu nam:", [str(year) for year in range(2000, datetime.now().year + 1)])
+            start_month = st.selectbox("Bat dau tu thang:", [f"{start_year}-{str(i).zfill(2)}" for i in range(1, 13)])
+            end_year = st.selectbox("Ket thuc o nam:", [str(year) for year in range(2000, datetime.now().year + 1)])
+            end_month = st.selectbox("Ket thuc o thang:", [f"{end_year}-{str(i).zfill(2)}" for i in range(1, 13)])
 
-            if st.button("Plot"):
+            if st.button("Hien thi"):
                 date_range = (start_month, end_month)
                 manager.plot_line_summary('month', date_range)
 
-        elif sub_choice == "Plot Pie Summary":
-            st.subheader("Plot Pie Summary")
-            period = st.selectbox("Plot summary by:", ["day", "month"])
+        elif sub_choice == "Thong ke chi tieu theo danh muc":
+            st.subheader("Thong ke chi tieu theo danh muc")
+            period = st.selectbox("Loc theo:", ["Ngay", "Thang"])
             specific_period = None
 
             if period == 'day':
-                specific_period = st.date_input("Select date:").strftime('%Y-%m-%d')
+                specific_period = st.date_input("Ngay:").strftime('%Y-%m-%d')
             elif period == 'month':
-                specific_period = st.selectbox("Select month:", [f"{datetime.now().year}-{str(i).zfill(2)}" for i in range(1, 13)])
+                specific_period = st.selectbox("Thang:", [f"{datetime.now().year}-{str(i).zfill(2)}" for i in range(1, 13)])
 
-            if st.button("Plot"):
+            if st.button("Hien thi"):
                 manager.plot_pie_summary(period, specific_period)
 
 if __name__ == "__main__":
