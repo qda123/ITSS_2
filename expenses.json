@@ -1,0 +1,185 @@
+[
+    {
+        "income": [
+            {
+                "amount": 37000000,
+                "description": "luong",
+                "date": "2024-04-21"
+            },
+            {
+                "amount": 67000000,
+                "description": "luong",
+                "date": "2024-06-16"
+            },
+            {
+                "amount": 67000000,
+                "description": "luong",
+                "date": "2024-05-16"
+            }
+        ],
+        "expenses": [
+            {
+                "amount": 1078000,
+                "description": "",
+                "category": "nhà ở",
+                "date": "2024-04-25"
+            },
+            {
+                "amount": 1001000,
+                "description": "",
+                "category": "hóa đơn",
+                "date": "2024-04-03"
+            },
+            {
+                "amount": 214000,
+                "description": "",
+                "category": "giáo dục",
+                "date": "2024-06-13"
+            },
+            {
+                "amount": 2287000,
+                "description": "",
+                "category": "mua sắm",
+                "date": "2024-06-08"
+            },
+            {
+                "amount": 406000,
+                "description": "",
+                "category": "di chuyển",
+                "date": "2024-05-10"
+            },
+            {
+                "amount": 2238000,
+                "description": "",
+                "category": "di chuyển",
+                "date": "2024-05-15"
+            },
+            {
+                "amount": 2718000,
+                "description": "",
+                "category": "di chuyển",
+                "date": "2024-06-16"
+            },
+            {
+                "amount": 2491000,
+                "description": "",
+                "category": "tiết kiệm",
+                "date": "2024-04-04"
+            },
+            {
+                "amount": 4033000,
+                "description": "",
+                "category": "nhà ở",
+                "date": "2024-06-05"
+            },
+            {
+                "amount": 2792000,
+                "description": "",
+                "category": "y tế",
+                "date": "2024-05-22"
+            },
+            {
+                "amount": 989000,
+                "description": "",
+                "category": "tiết kiệm",
+                "date": "2024-05-04"
+            },
+            {
+                "amount": 2030000,
+                "description": "",
+                "category": "giải trí",
+                "date": "2024-04-21"
+            },
+            {
+                "amount": 4691000,
+                "description": "",
+                "category": "nhà ở",
+                "date": "2024-05-04"
+            },
+            {
+                "amount": 2099000,
+                "description": "",
+                "category": "du lịch",
+                "date": "2024-04-05"
+            },
+            {
+                "amount": 3777000,
+                "description": "",
+                "category": "hóa đơn",
+                "date": "2024-04-11"
+            },
+            {
+                "amount": 3918000,
+                "description": "",
+                "category": "di chuyển",
+                "date": "2024-04-06"
+            },
+            {
+                "amount": 4383000,
+                "description": "",
+                "category": "giáo dục",
+                "date": "2024-04-05"
+            },
+            {
+                "amount": 2619000,
+                "description": "",
+                "category": "giải trí",
+                "date": "2024-04-27"
+            },
+            {
+                "amount": 4861000,
+                "description": "",
+                "category": "mua sắm",
+                "date": "2024-04-25"
+            },
+            {
+                "amount": 4067000,
+                "description": "",
+                "category": "giáo dục",
+                "date": "2024-04-09"
+            }
+        ],
+        "categories": [
+            {
+                "name": "ăn uống",
+                "description": ""
+            },
+            {
+                "name": "giải trí",
+                "description": ""
+            },
+            {
+                "name": "giáo dục",
+                "description": ""
+            },
+            {
+                "name": "y tế",
+                "description": ""
+            },
+            {
+                "name": "di chuyển",
+                "description": ""
+            },
+            {
+                "name": "mua sắm",
+                "description": ""
+            },
+            {
+                "name": "hóa đơn",
+                "description": ""
+            },
+            {
+                "name": "du lịch",
+                "description": ""
+            },
+            {
+                "name": "nhà ở",
+                "description": ""
+            },
+            {
+                "name": "tiết kiệm",
+                "description": ""
+            }
+        ]
+    }
+]
