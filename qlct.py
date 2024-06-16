@@ -224,8 +224,12 @@ class ExpenseManager:
             expense_summary = {k: v for k, v in expense_summary.items() if start_period <= k <= end_period}
             income_summary = {k: v for k, v in income_summary.items() if start_period <= k <= end_period}
 
-        dates = list(expense_summary.keys())
-        expense_amounts = list(expense_summary.values())
+        # Sắp xếp các summary theo thời gian tăng dần
+        sorted_expense_summary = sorted(expense_summary.items(), key=lambda x: x[0])
+        sorted_income_summary = sorted(income_summary.items(), key=lambda x: x[0])
+
+        dates = [item[0] for item in sorted_expense_summary]
+        expense_amounts = [item[1] for item in sorted_expense_summary]
         income_amounts = [income_summary.get(date, 0) for date in dates]
 
         plt.figure(figsize=(10, 5))
@@ -239,6 +243,7 @@ class ExpenseManager:
         plt.xticks(rotation=45)
         plt.tight_layout()
         st.pyplot(plt)
+
 
     def plot_pie_summary(self, period, specific_period):
         category_summary = {}
