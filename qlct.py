@@ -157,9 +157,9 @@ class ExpenseManager:
             st.table(pd.DataFrame(table_data, columns=['Loai thu nhap', 'So tien (VND)', 'Ngay']))
         
         elif period == 'Thang':
-            selected_year = st.selectbox("Thang:", list(set(income['date'][:4] for income in self.data['income'])))
+            selected_year = st.selectbox("Nam:", list(set(income['date'][:4] for income in self.data['income'])))
             incomes_by_year = [income for income in self.data['income'] if income['date'][:4] == selected_year]
-            selected_month = st.selectbox("Nam:", [str(i).zfill(2) for i in range(1, 13)])
+            selected_month = st.selectbox("Thang:", [str(i).zfill(2) for i in range(1, 13)])
             incomes_by_month = [income for income in incomes_by_year if income['date'][5:7] == selected_month]
             sorted_incomes_by_month = sorted(incomes_by_month, key=lambda x: x['date'])  
             if sorted_incomes_by_month:
