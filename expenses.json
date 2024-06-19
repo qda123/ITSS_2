@@ -1,159 +1,176 @@
 {
     "income": [
         {
-            "amount": 37000000,
+            "amount": 3700000,
             "description": "Luong",
             "date": "2024-04-21"
         },
         {
-            "amount": 67000000,
-            "description": "Luong",
-            "date": "2024-06-16"
-        },
-        {
-            "amount": 67000000,
+            "amount": 6700000,
             "description": "Luong",
             "date": "2024-05-16"
+        },
+        {
+            "amount": 2000000,
+            "description": "Lam them",
+            "date": "2024-06-19"
+        },
+        {
+            "amount": 6700000,
+            "description": "Luong",
+            "date": "2024-06-16"
         }
     ],
     "expenses": [
         {
-            "amount": 1078000,
+            "amount": 2000000,
             "description": "",
             "category": "Nha o",
-            "date": "2024-04-25"
+            "date": "2024-04-15"
         },
         {
-            "amount": 1001000,
+            "amount": 2000000,
             "description": "",
-            "category": "Hoa don",
-            "date": "2024-04-03"
-        },
-        {
-            "amount": 214000,
-            "description": "",
-            "category": "Giao duc",
-            "date": "2024-06-13"
-        },
-        {
-            "amount": 2287000,
-            "description": "",
-            "category": "Mua sam",
-            "date": "2024-06-08"
-        },
-        {
-            "amount": 406000,
-            "description": "",
-            "category": "Di chuyen",
-            "date": "2024-05-10"
-        },
-        {
-            "amount": 2238000,
-            "description": "",
-            "category": "Di chuyen",
+            "category": "Nha o",
             "date": "2024-05-15"
         },
         {
-            "amount": 2718000,
+            "amount": 2000000,
             "description": "",
-            "category": "Di chuyen",
+            "category": "Nha o",
+            "date": "2024-06-15"
+        },
+        {
+            "amount": 300000,
+            "description": "",
+            "category": "Tien dien",
+            "date": "2024-04-15"
+        },
+        {
+            "amount": 270000,
+            "description": "",
+            "category": "Tien dien",
+            "date": "2024-05-15"
+        },
+        {
+            "amount": 280000,
+            "description": "",
+            "category": "Tien dien",
+            "date": "2024-06-15"
+        },
+        {
+            "amount": 70000,
+            "description": "",
+            "category": "Tien nuoc",
+            "date": "2024-04-15"
+        },
+        {
+            "amount": 71000,
+            "description": "",
+            "category": "Tien nuoc",
+            "date": "2024-05-15"
+        },        
+        {
+            "amount": 10000,
+            "description": "An sang - xoi",
+            "category": "An uong",
+            "date": "2024-06-15"
+        },
+        {
+            "amount": 20000,
+            "description": "An trua - banh my",
+            "category": "An uong",
+            "date": "2024-06-15"
+        },
+        {
+            "amount": 30000,
+            "description": "An toi - com",
+            "category": "An uong",
+            "date": "2024-06-15"
+        },
+        {
+            "amount": 20000,
+            "description": "An sang - banh my",
+            "category": "An uong",
             "date": "2024-06-16"
         },
         {
-            "amount": 2491000,
-            "description": "",
-            "category": "Tiet kiem",
-            "date": "2024-04-04"
+            "amount": 30000,
+            "description": "An trua - pho",
+            "category": "An uong",
+            "date": "2024-06-16"
         },
         {
-            "amount": 4033000,
-            "description": "",
-            "category": "Nha o",
-            "date": "2024-06-05"
+            "amount": 4000,
+            "description": "An toi - my tom",
+            "category": "An uong",
+            "date": "2024-06-16"
         },
         {
-            "amount": 2792000,
-            "description": "",
-            "category": "Y te",
-            "date": "2024-05-22"
+            "amount": 20000,
+            "description": "An sang - banh my",
+            "category": "An uong",
+            "date": "2024-06-17"
         },
         {
-            "amount": 989000,
-            "description": "",
-            "category": "Tiet kiem",
-            "date": "2024-05-04"
+            "amount": 40000,
+            "description": "An trua - pho cuon",
+            "category": "An uong",
+            "date": "2024-06-17"
         },
         {
-            "amount": 2030000,
-            "description": "",
+            "amount": 4000,
+            "description": "An toi - my tom",
+            "category": "An uong",
+            "date": "2024-06-17"
+        },
+        {
+            "amount": 20000,
+            "description": "An sang - banh my",
+            "category": "An uong",
+            "date": "2024-06-18"
+        },
+        {
+            "amount": 10000,
+            "description": "An trua - banh bao",
+            "category": "An uong",
+            "date": "2024-06-18"
+        },
+        {
+            "amount": 40000,
+            "description": "An toi - com bui",
+            "category": "An uong",
+            "date": "2024-06-18"
+        },
+        {
+            "amount": 500000,
+            "description": "Skin LoL",
             "category": "Giai tri",
-            "date": "2024-04-21"
+            "date": "2024-06-18"
         },
         {
-            "amount": 4691000,
-            "description": "",
-            "category": "Nha o",
-            "date": "2024-05-04"
-        },
-        {
-            "amount": 2099000,
-            "description": "",
-            "category": "Du lich",
-            "date": "2024-04-05"
-        },
-        {
-            "amount": 3777000,
-            "description": "",
-            "category": "Hoa don",
-            "date": "2024-04-11"
-        },
-        {
-            "amount": 3918000,
-            "description": "",
+            "amount": 50000,
+            "description": "Xang xe",
             "category": "Di chuyen",
-            "date": "2024-04-06"
-        },
-        {
-            "amount": 4383000,
-            "description": "",
-            "category": "Giao duc",
-            "date": "2024-04-05"
-        },
-        {
-            "amount": 2619000,
-            "description": "",
-            "category": "Giai tri",
-            "date": "2024-04-27"
-        },
-        {
-            "amount": 4861000,
-            "description": "",
-            "category": "Mua sam",
-            "date": "2024-04-25"
-        },
-        {
-            "amount": 4067000,
-            "description": "",
-            "category": "Giao duc",
-            "date": "2024-04-09"
+            "date": "2024-06-18"
         }
     ],
     "categories": [
         {
             "name": "An uong",
-            "description": ""
+            "description": "Cac bua an hang ngay"
         },
         {
             "name": "Giai tri",
-            "description": ""
+            "description": "Game, xem phim, v.v"
         },
         {
-            "name": "Giao duc",
+            "name": "Hoc phi",
             "description": ""
         },
         {
             "name": "Y te",
-            "description": ""
+            "description": "Tien thuoc men"
         },
         {
             "name": "Di chuyen",
@@ -161,11 +178,7 @@
         },
         {
             "name": "Mua sam",
-            "description": ""
-        },
-        {
-            "name": "Hoa don",
-            "description": ""
+            "description": "Quan ao, giay dep, shoppee"
         },
         {
             "name": "Du lich",
@@ -173,11 +186,16 @@
         },
         {
             "name": "Nha o",
-            "description": ""
+            "description": "Tien thue nha"
         },
         {
-            "name": "Tiet kiem",
-            "description": ""
+            "name": "Tien dien",
+            "description": "Tien dien hang thang"
+        },
+        {
+            "name": "Tien nuoc",
+            "description": "Tien nuoc hang thang"
         }
+        
     ]
 }
