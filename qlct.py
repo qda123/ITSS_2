@@ -105,8 +105,8 @@ class ExpenseManager:
             table_data = []
             sorted_expenses = sorted(self.data['expenses'], key=lambda x: x['date'])  
             for idx, expense in enumerate(sorted_expenses):
-                table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
-            st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
+                table_data.append([expense['description'], expense['amount'], expense['category'], expense['date']])
+            st.table(pd.DataFrame(table_data, columns=['Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
 
         elif period == 'Ngay':
             selected_date = st.date_input("Ngay:")
@@ -114,8 +114,8 @@ class ExpenseManager:
             if expenses_by_day:
                 table_data = []
                 for idx, expense in enumerate(expenses_by_day):
-                    table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
-                st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
+                    table_data.append([expense['description'], expense['amount'], expense['category'], expense['date']])
+                st.table(pd.DataFrame(table_data, columns=['Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
             else:
                 st.write("Khong tim thay thong tin chi tieu trong ngay duoc chon.")
         
@@ -128,8 +128,8 @@ class ExpenseManager:
             if sorted_expenses_by_month:
                 table_data = []
                 for idx, expense in enumerate(sorted_expenses_by_month):
-                    table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
-                st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
+                    table_data.append([expense['description'], expense['amount'], expense['category'], expense['date']])
+                st.table(pd.DataFrame(table_data, columns=['Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
             else:
                 st.write("Khong tim thay thong tin chi tieu trong thang duoc chon.")
 
@@ -140,8 +140,8 @@ class ExpenseManager:
             if sorted_expenses_by_year:
                 table_data = []
                 for idx, expense in enumerate(sorted_expenses_by_year):
-                    table_data.append([idx + 1, expense['description'], expense['amount'], expense['category'], expense['date']])
-                st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
+                    table_data.append([expense['description'], expense['amount'], expense['category'], expense['date']])
+                st.table(pd.DataFrame(table_data, columns=['Ghi chu', 'So tien (VND)', 'Danh muc', 'Ngay']))
             else:
                 st.write("Khong tim thay thong tin chi tieu trong nam duoc chon.")
 
@@ -153,8 +153,8 @@ class ExpenseManager:
             table_data = []
             sorted_income = sorted(self.data['income'], key=lambda x: x['date'])  
             for idx, income in enumerate(sorted_income):
-                table_data.append([idx + 1, income['description'], income['amount'], income['date']])
-            st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Loai thu nhap', 'So tien (VND)', 'Ngay']))
+                table_data.append([income['description'], income['amount'], income['date']])
+            st.table(pd.DataFrame(table_data, columns=['Loai thu nhap', 'So tien (VND)', 'Ngay']))
         
         elif period == 'Thang':
             selected_year = st.selectbox("Thang:", list(set(income['date'][:4] for income in self.data['income'])))
@@ -165,8 +165,8 @@ class ExpenseManager:
             if sorted_incomes_by_month:
                 table_data = []
                 for idx, income in enumerate(sorted_incomes_by_month):
-                    table_data.append([idx + 1, income['description'], income['amount'], income['date']])
-                st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Loai thu nhap', 'So tien (VND)', 'Ngay']))
+                    table_data.append([income['description'], income['amount'], income['date']])
+                st.table(pd.DataFrame(table_data, columns=['Loai thu nhap', 'So tien (VND)', 'Ngay']))
             else:
                 st.write("Khong tim thay thong tin thu nhap trong thang duoc chon.")
 
@@ -177,8 +177,8 @@ class ExpenseManager:
             if sorted_incomes_by_year:
                 table_data = []
                 for idx, income in enumerate(sorted_incomes_by_year):
-                    table_data.append([idx + 1, income['description'], income['amount'], income['date']])
-                st.table(pd.DataFrame(table_data, columns=['So thu tu', 'Loai thu nhap', 'So tien (VND)', 'Ngay']))
+                    table_data.append([income['description'], income['amount'], income['date']])
+                st.table(pd.DataFrame(table_data, columns=['Loai thu nhap', 'So tien (VND)', 'Ngay']))
             else:
                 st.write("Khong tim thay thong tin thu nhap trong nam duoc chon.")
 
